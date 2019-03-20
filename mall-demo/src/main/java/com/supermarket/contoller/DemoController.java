@@ -11,6 +11,7 @@ public class DemoController {
 
     @RequestMapping("/demo")
     public String demo() {
+        System.out.println("====");
         return "hello,world";
     }
 
