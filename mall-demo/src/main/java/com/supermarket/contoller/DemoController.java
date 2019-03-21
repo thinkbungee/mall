@@ -1,12 +1,10 @@
 package com.supermarket.contoller;
 
-import com.supermarket.dao.User;
-import com.supermarket.mapper.UserMapper;
+import com.supermarket.mapper.OmsOrderMapper;
+import com.supermarket.model.OmsOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.annotation.Resource;
 
 /**
  * @version 1.0 created by chenyichang_fh on 2019/3/20 18:17
@@ -14,13 +12,14 @@ import javax.annotation.Resource;
 @RestController
 public class DemoController {
 
-    @Resource
-    private UserMapper userMapper;
+    @Autowired
+    OmsOrderMapper omsOrderMapper;
 
     @RequestMapping("/demo")
-    public User demo() {
-        User byId = userMapper.getById(3);
-        return byId;
+    public OmsOrder demo() {
+
+        OmsOrder omsOrder = omsOrderMapper.selectByPrimaryKey(12L);
+        return omsOrder;
     }
 
 }
