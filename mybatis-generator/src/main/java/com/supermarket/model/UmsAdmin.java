@@ -6,6 +6,22 @@ import java.util.Date;
 public class UmsAdmin implements Serializable {
     private Long id;
 
+    @Override
+    public String toString() {
+        return "UmsAdmin{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", icon='" + icon + '\'' +
+                ", email='" + email + '\'' +
+                ", nickName='" + nickName + '\'' +
+                ", note='" + note + '\'' +
+                ", createTime=" + createTime +
+                ", loginTime=" + loginTime +
+                ", status=" + status +
+                '}';
+    }
+
     private String username;
 
     private String password;

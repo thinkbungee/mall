@@ -19,6 +19,16 @@ spring:
     poolPreparedStatements: true
 mybatis:
   mapper-locations: classpath:mapping/*.xml  #注意：一定要对应mapper映射xml文件的所在路径
+#jwt
+jwt:
+  #JWT存储的请求头
+  tokenHeader: Authorization
+  #JWT加解密使用的密钥
+  secret: mySecret
+  #JWT的超期限时间(60*60*24)
+  expiration: 604800
+  #JWT负载中拿到开头
+  tokenHead: Bearer
 
 server:
   port: 8080

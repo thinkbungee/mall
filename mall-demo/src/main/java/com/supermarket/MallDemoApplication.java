@@ -21,7 +21,7 @@ import java.io.IOException;
  * @version 1.0 created by chenyichang_fh on 2019/3/20 18:00
  */
 @SpringBootApplication
-@MapperScan("com.supermarket.mapper")
+@MapperScan({"com.supermarket.mapper","com.supermarket.dao"})
 public class MallDemoApplication {
     public static void main(String[] args) {
         SpringApplication.run(MallDemoApplication.class);
