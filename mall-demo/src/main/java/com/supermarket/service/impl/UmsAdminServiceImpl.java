@@ -1,5 +1,6 @@
 package com.supermarket.service.impl;
 
+import com.github.pagehelper.PageHelper;
 import com.supermarket.dao.UmsAdminPermissionRelationDao;
 import com.supermarket.dao.UmsAdminRoleRelationDao;
 import com.supermarket.dto.UmsAdminParam;
@@ -12,6 +13,7 @@ import com.supermarket.service.UmsAdminService;
 import com.supermarket.util.JwtTokenUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.encoding.PasswordEncoder;
@@ -21,6 +23,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -65,6 +68,9 @@ public class UmsAdminServiceImpl implements UmsAdminService {
 
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
+
+    @Value("${jwt.tokenHead}")
+    private String tokenHead;
 
     @Override
     public UmsAdmin getAdminByUsername(String username) {
@@ -151,31 +157,43 @@ public class UmsAdminServiceImpl implements UmsAdminService {
 
     @Override
     public String refreshToken(String oldToken) {
+        String token = oldToken.substring(tokenHead.length());
+        if (jwtTokenUtil.canRefresh(token)) {
+            return jwtTokenUtil.refreshToken(token);
+        }
         return null;
     }
 
     @Override
     public UmsAdmin getUserById(Long id) {
-        return null;
+        return umsAdminMapper.selectByPrimaryKey(id);
     }
 
     @Override
     public List<UmsAdmin> list(String name, Integer pageSize, Integer pageNum) {
-        return null;
+        PageHelper.startPage(pageNum, pageSize);
+        UmsAdminExample example = new UmsAdminExample();
+        if (!StringUtils.isEmpty(name)) {
+            example.createCriteria().andUsernameLike("%" + name + "%");
+            example.or(example.createCriteria().andNickNameLike("%" + name + "%"));
+        }
+        return umsAdminMapper.selectByExample(example);
     }
 
     @Override
     public int update(Long id, UmsAdmin admin) {
-        return 0;
+        admin.setId(id);
+        return umsAdminMapper.updateByPrimaryKey(admin);
     }
 
     @Override
     public int delete(Long id) {
-        return 0;
+        return umsAdminMapper.deleteByPrimaryKey(id);
     }
 
     @Override
     public int updateRole(Long adminId, List<Long> roleIds) {
+
         return 0;
     }
 
