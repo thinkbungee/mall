@@ -3,6 +3,7 @@ package com.supermarket.contoller;
 import com.supermarket.dto.CommonResult;
 import com.supermarket.dto.UmsAdminLoginParam;
 import com.supermarket.dto.UmsAdminParam;
+import com.supermarket.model.UmsAdmin;
 import com.supermarket.service.UmsAdminService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -39,8 +40,11 @@ public class UmsAdminController {
     @ApiOperation(value = "用户注册")
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public Object register(@RequestBody UmsAdminParam umsAdminParam, BindingResult bindingResult) {
-
-        return null;
+        UmsAdmin register = umsAdminService.register(umsAdminParam);
+        if (register == null) {
+            return new CommonResult().failed();
+        }
+        return new CommonResult().success(register);
     }
 
 
@@ -62,23 +66,34 @@ public class UmsAdminController {
     @ApiOperation(value = "刷新token")
     @RequestMapping(value = "/token/refresh", method = RequestMethod.GET)
     public Object refreshToken(HttpServletRequest request) {
-
-        return null;
+        String token = request.getHeader(tokenHeader);
+        String refreshToken = umsAdminService.refreshToken(token);
+        if (refreshToken == null) {
+            return new CommonResult().failed();
+        }
+        Map<String, String> tokenMap = new HashMap<>();
+        tokenMap.put("token", refreshToken);
+        tokenMap.put("tokenHead", tokenHead);
+        return new CommonResult().success(tokenMap);
     }
 
     @ResponseBody
     @ApiOperation(value = "获取当前登录用户信息")
     @RequestMapping(value = "/info", method = RequestMethod.GET)
     public Object getAdminInfo(Principal principal) {
-
-        return null;
+        String username = principal.getName();
+        UmsAdmin adminByUsername = umsAdminService.getAdminByUsername(username);
+        Map<String, Object> data = new HashMap<>();
+        data.put("username", adminByUsername.getUsername());
+        data.put("roles", new String[]{"test"});
+        data.put("icon", adminByUsername.getIcon());
+        return new CommonResult().success(data);
     }
 
     @ResponseBody
     @ApiOperation(value = "登出")
     @RequestMapping(value = "/logout", method = RequestMethod.POST)
     public Object logout() {
-
-        return null;
+        return new CommonResult().success(null);
     }
 }

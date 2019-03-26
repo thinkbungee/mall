@@ -1,12 +1,14 @@
 package com.supermarket.dto;
 
 import lombok.Data;
+import lombok.ToString;
 import org.springframework.validation.BindingResult;
 
 /**
  * @version 1.0 created by chenyichang_fh on 2019/3/25 14:34
  */
 @Data
+@ToString
 public class CommonResult {
     //成功
     public static final int success = 200;
