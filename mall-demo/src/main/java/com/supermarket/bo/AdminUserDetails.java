@@ -28,6 +28,7 @@ public class AdminUserDetails implements UserDetails {
     }
 
 
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         //返回当前用户权限
