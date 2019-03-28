@@ -9,7 +9,7 @@ import java.util.concurrent.*;
  * @filename:ServiceThreadPool.java
  *
  *
- * @Description:业务处理线程池
+ * @Description:业务线程池
  * @author dzh
  * @date 2019.03.28
  * @version 1.0
