@@ -1,8 +1,10 @@
 package com.supermarket.async;
 
-import com.supermarket.async.policy.RejectedPolicyType;
+import com.supermarket.async.policy.*;
+import com.supermarket.core.NamedThreadFactory;
 import com.supermarket.core.NioSystemConfig;
 
+import java.util.Timer;
 import java.util.concurrent.*;
 
 /**
@@ -20,15 +22,15 @@ public class ServiceThreadPool {
         RejectedPolicyType type = RejectedPolicyType.fromString(System.getProperty(NioSystemConfig.SYSTEM_PROPERTY_THREADPOOL_REJECTED_POLICY_ATTR,"AbortPolicy"));
         switch (type) {
             case ABORT_POLICY:
-                //return abort
+                return new AbortPolicy();
             case BLOCKING_POLICY:
-                //return blocking
+                return new BlockingPolicy();
             case CALLER_RUNS_POLICY:
-                //return callerRuns
+                return new CallerRunsPolicy();
             case DISCARDED_POLICY:
-                //return discarded
+                return new DiscardedPolicy();
             case REJECTED_POLICY:
-                //return rejected
+                return new RejectedPolicy();
             default:
                 break;
         }
@@ -39,14 +41,30 @@ public class ServiceThreadPool {
         BlockingQueueType qType = BlockingQueueType.fromString(System.getProperty(NioSystemConfig.SYSTEM_PROPERTY_THREADPOOL_QUEUE_NAME_ATTR,"LinkedBlockingQueue"));
         switch (qType) {
             case LINKED_BLOCKING_QUEUE:
-                return new LinkedBlockingQueue<>();
+                return new LinkedBlockingQueue<Runnable>();
             case ARRAY_BLOCKING_QUEUE:
-                return new ArrayBlockingQueue<>(NioSystemConfig.SYSTEM_PROPERTY_PARALLEL * queues);
+                return new ArrayBlockingQueue<Runnable>(NioSystemConfig.SYSTEM_PROPERTY_PARALLEL * queues);
             case SYNCHRONOUS_QUEUE:
-                return new SynchronousQueue<>();
+                return new SynchronousQueue<Runnable>();
             default:
                 break;
         }
         return null;
+    }
+
+    public static Executor getExecutor(int threads, int queues){
+        System.out.println("ThreadPool Core[threads:" + threads + ", queues:" + queues + "]");
+        String threadName = "ServiceThreadPool";
+        ThreadPoolExecutor executor = new ThreadPoolExecutor(threads, queues, 0, TimeUnit.MILLISECONDS,
+                    createBlockingQueue(queues),
+                    new NamedThreadFactory(threadName, true),
+                    createPolicy()
+                );
+        return executor;
+    }
+
+    public static Executor getExecutorWithJmx(int threads, int queues) {
+        final ThreadPoolExecutor executor = (ThreadPoolExecutor) getExecutor(threads, queues);
+        return executor;
     }
 }

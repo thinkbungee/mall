@@ -14,8 +14,8 @@ public enum RejectedPolicyType {
      * @param ABORT_POLICY          丢弃任务并抛出异常
      * @param BLOCKING_POLICY       等待队列有可用空间再加入任务
      * @param CALLER_RUNS_POLICY    由主线程执行该任务
-     * @param DISCARDED_POLICY      丢弃任务
-     * @param REJECTED_POLICY       丢弃最早的几个任务
+     * @param DISCARDED_POLICY      丢弃最早的几个任务,立即添加任务
+     * @param REJECTED_POLICY       丢弃最早的几个任务,RejectedRunnable线程直接丢弃
      */
     ABORT_POLICY("AbortPolicy"),
     BLOCKING_POLICY("BlockingPolicy"),

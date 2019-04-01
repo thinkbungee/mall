@@ -1,6 +1,7 @@
 package com.supermarket.core;
 
-import org.springframework.util.StringUtils;
+
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -32,11 +33,11 @@ public class NamedThreadFactory implements ThreadFactory {
         this("supermarket-nio-threadpool-" + THREAD_NUMBER.getAndIncrement());
     }
 
-    NamedThreadFactory(String prefix){
+    public NamedThreadFactory(String prefix){
         this(prefix, false);
     }
 
-    NamedThreadFactory(String prefix, boolean daemo){
+    public NamedThreadFactory(String prefix, boolean daemo){
         this.prefix = StringUtils.isEmpty(prefix) ? prefix + "-thread-" : "";
         daemoThread = daemo;
         SecurityManager s = System.getSecurityManager();
