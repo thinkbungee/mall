@@ -1,9 +1,9 @@
-package com.supermarket.async.netty;
+package com.supermarket.netty;
 
 import com.supermarket.async.ServiceThreadPool;
-import com.supermarket.async.model.MessageRequest;
-import com.supermarket.async.model.MessageResponse;
 import com.supermarket.core.NioSystemConfig;
+import com.supermarket.model.MessageRequest;
+import com.supermarket.model.MessageResponse;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;

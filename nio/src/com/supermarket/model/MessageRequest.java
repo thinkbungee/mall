@@ -1,4 +1,4 @@
-package com.supermarket.async.model;
+package com.supermarket.model;
 
 public class MessageRequest {
     private String messageId;
