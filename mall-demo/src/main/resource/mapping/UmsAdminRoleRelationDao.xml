@@ -2,27 +2,68 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.supermarket.dao.UmsAdminRoleRelationDao">
 
+    <!--
+        批量新增用户和角色的对应关系
+        int insertList(@Param("list") List<UmsAdminRoleRelation> adminRoleRelationList);
+    -->
+    <insert id="insertList" parameterType="java.util.List">
+        insert into ums_admin_role_relation (admin_id,role_id)
+        values
+        <foreach collection="list" separator="," item="item" index="index">
+            (
+            {#item.adminId,jdbcType=BIGINT},
+            {#item.roleId,jdbcType=BIGINT}
+            )
+        </foreach>
 
-    <select id="getPermissionList" resultMap="com.supermarket.mapper.UmsPermissionMapper.BaseResultMap">
-    SELECT p.*
-    FROM ums_admin_role_relation ar
-    LEFT JOIN ums_role r ON ar.role_id = r.id
-    LEFT JOIN ums_role_permission_relation rp ON rp.role_id = r.id
-    LEFT JOIN ums_permission p ON rp.permission_id = p.id
-    WHERE ar.admin_id = #{adminId}
-        AND p.id IS NOT NULL
-        AND p.id NOT IN (
-        SELECT p.id
-        FROM
-            ums_admin_permission_relation pr
-            LEFT JOIN ums_permission p ON pr.permission_id = p.id
-        WHERE pr.type = -1 AND pr.admin_id = #{adminId}
-    )
-    UNION
-    SELECT p.*
-    FROM ums_admin_permission_relation pr
-    LEFT JOIN ums_permission p ON pr.permission_id = p.id
-    WHERE pr.type = 1 and pr.admin_id = #{adminId}
+    </insert>
+
+    <!--
+        获取用户所有的角色
+        List<UmsRole> getRoleList(@Param("adminId") Long adminId);
+    -->
+    <select id="getRoleList" resultMap="com.supermarket.mapper.UmsRoleMapper.BaseResultMap">
+      select r.*
+      from ums_admin_role_relation ar
+      left join ums_role r on ar.role_id = r.id
+      where ar.admin_id = #{#adminId}
 
     </select>
+
+    <!--
+        获取用户所有角色权限
+        List<UmsPermission> getRolePermissionList(@Param("adminId") Long adminId);
+    -->
+    <select id="getRolePermissionList" resultMap="com.supermarket.mall.mapper.UmsPermissionMapper.BaseResultMap">
+
+    </select>
+
+    <!--
+        得到用户的所有权限
+        List<UmsPermission> getPermissionList(@Param("adminId") Long adminId);
+    -->
+    <select id="getPermissionList" resultMap="com.supermarket.mapper.UmsPermissionMapper.BaseResultMap">
+    select p.*
+    from ums_admin_role_relation ar
+    left join ums_role r on ar.role_id = r.id
+    left join ums_role_permission_relation rp on rp.role_id = r.id
+    left join ums_permission p on rp.permission_id = p.id
+    where ar.admin_id = #{adminId}
+        and p.id is not null
+        and p.id not in (
+        select p.id
+        from
+            ums_admin_permission_relation pr
+            left join ums_permission p on pr.permission_id = p.id
+        where pr.type = -1 and pr.admin_id = #{adminId}
+    )
+    union
+    select p.*
+    from ums_admin_permission_relation pr
+    left join ums_permission p on pr.permission_id = p.id
+    where pr.type = 1 and pr.admin_id = #{adminId}
+
+    </select>
+
+
 </mapper>

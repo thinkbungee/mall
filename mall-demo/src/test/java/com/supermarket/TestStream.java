@@ -1,5 +1,6 @@
 package com.supermarket;
 
+import com.alibaba.fastjson.JSONObject;
 import org.junit.Test;
 
 import java.lang.reflect.Field;
@@ -30,5 +31,20 @@ public class TestStream {
         f.setAccessible(true);
         f.set(a, 20);
     }
+
+    private ThreadLocal<Integer> i = new ThreadLocal<Integer>();
+
+    @Test
+    public void test2() {
+        i.set(1);
+        change(i);
+        System.out.println(i.get());
+    }
+
+    private void change(ThreadLocal i) {
+        i.set(2);
+        return;
+    }
+
 
 }
