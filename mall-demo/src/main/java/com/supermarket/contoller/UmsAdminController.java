@@ -11,6 +11,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,7 +27,8 @@ import java.util.Map;
  * @version 1.0 created by chenyichang_fh on 2019/3/22 15:04
  */
 @Api(tags = "UmsAdminController", description = "后台用户管理")
-@RestController("/admin")
+@Controller
+@RequestMapping("/admin")
 public class UmsAdminController {
 
     @Value("${jwt.tokenHeader}")
@@ -59,9 +62,9 @@ public class UmsAdminController {
         if (token == null) {
             return new CommonResult().validateFailed("用户名或密码错误");
         }
-        Map<String ,String > tokenMap = new HashMap<>();
-        tokenMap.put("token",token);
-        tokenMap.put("tokenHead",tokenHead);
+        Map<String, String> tokenMap = new HashMap<>();
+        tokenMap.put("token", token);
+        tokenMap.put("tokenHead", tokenHead);
         return new CommonResult().success(tokenMap);
     }
 
@@ -84,7 +87,9 @@ public class UmsAdminController {
     @ApiOperation(value = "获取当前登录用户信息")
     @RequestMapping(value = "/info", method = RequestMethod.GET)
     public Object getAdminInfo(Principal principal) {
-        String username = principal.getName();
+        Object principal1 = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        String username = principal.getName();
+        String username = "tom";
         UmsAdmin adminByUsername = umsAdminService.getAdminByUsername(username);
         Map<String, Object> data = new HashMap<>();
         data.put("username", adminByUsername.getUsername());

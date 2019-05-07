@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="test">
+    <p>1.双大括号表达式</p>
+    <p>{{msg}}</p>
+    <p>{{msg.toUpperCase()}}</p>
+
+
+    <p>2. 指令一: 强制数据绑定</p>
+
+    <a href="url">访问指定站点</a>
+    <a v-bind:href="url">访问指定站点</a>
+    <a :href="url">访问指定站点</a>
+
+    <p>3. 指令二: 绑定事件监听</p>
+
+    <button v-on:click="test">点我</button>
+    <button @click="test">点我</button>
+
+
+</div>
+</body>
+
+<script src="../js/vue.js"></script>
+<script>
+    new Vue({
+        el: '#test',
+        data: {
+            msg: 'I love you',
+            url: 'http://www.baidu.com'
+        },
+        methods:{
+            test(){
+                alert("hehe!!")
+            }
+        }
+    })
+
+</script>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="demo">
+    <h2>测试：v-for遍历数组</h2>
+
+    <ul>
+        <li v-for="(p,index) in persons" :key="index">
+            {{index}}--{{p.name}}--{{p.age}}
+            <button @click="deleteP(index)">删除</button>
+            <button @click="updateP(index,{name:'cat',age:13})">更新</button>
+        </li>
+    </ul>
+        <button @click="addp({name:'zhangsan',age:10})">添加</button>
+
+    <h2>
+        测试：v-for遍历对象
+    </h2>
+    <ul>
+        //第一个位置是元素
+        <li v-for="(item,key) in persons[1]" :key="key">
+            {{key}}=={{item}}
+        </li>
+    </ul>
+</div>
+
+</body>
+<script src="../js/vue.js"></script>
+<script>
+    new Vue({
+        el: '#demo',
+        data: {
+            persons: [
+                {name: 'tom', age: 16},
+                {name: 'jack', age: 17},
+                {name: 'mary', age: 18},
+                {name: 'tony', age: 19},
+            ]
+        },
+        methods: {
+            deleteP(index) {
+                /*
+                * 调用了不是原生数组的splice()，而是一个重写(变异)方法
+                * 1.调用原生的数组的splice方法
+                * 2.更新界面*/
+                this.persons.splice(index, 1)
+            },
+            updateP(index, newP) {
+                console.log(index)
+                // this.persons[index] = newP
+                this.persons.splice(index, 1, newP)
+            },
+            addp(newP){
+                this.persons.push(newP)
+            }
+
+        }
+    })
+
+</script>
+
+</html>

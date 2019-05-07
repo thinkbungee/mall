@@ -27,22 +27,25 @@ select * from ums_admin_role_relation ar where ar.admin_id = 3;
 -- 权限为- 需要剔除掉，权限为+ 需要增加
 
 -- 汇总SQL
-SELECT p.*
-FROM ums_admin_role_relation ar
-       LEFT JOIN ums_role r ON ar.role_id = r.id
-       LEFT JOIN ums_role_permission_relation rp ON rp.role_id = r.id
-       LEFT JOIN ums_permission p ON rp.permission_id = p.id
-WHERE ar.admin_id = 3
-  AND p.id IS NOT NULL
-  AND p.id NOT IN (
-                  SELECT p.id
-                  FROM
+
+select p.*
+from ums_admin_role_relation ar
+       left join ums_role r on ar.role_id = r.id
+       left join ums_role_permission_relation rp on rp.role_id = r.id
+       left join ums_permission p on rp.permission_id = p.id
+where ar.admin_id = 3
+  and p.id is not null
+  and p.id not in (
+                  select p.id
+                  from
                        ums_admin_permission_relation pr
-                         LEFT JOIN ums_permission p ON pr.permission_id = p.id
-                  WHERE pr.type = -1 AND pr.admin_id = 3
+                         left join ums_permission p on pr.permission_id = p.id
+                  where pr.type = -1 and pr.admin_id = 3
                   )
-UNION
-SELECT p.*
-FROM ums_admin_permission_relation pr
-       LEFT JOIN ums_permission p ON pr.permission_id = p.id
-WHERE pr.type = 1 and pr.admin_id = 3
+union
+select p.*
+from ums_admin_permission_relation pr
+       left join ums_permission p on pr.permission_id = p.id
+where pr.type = 1 and pr.admin_id = 3
+
+

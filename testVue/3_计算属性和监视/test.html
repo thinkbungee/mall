@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="demo">
+    姓：<input v-model="fristName"><br>
+    名：<input v-model="lastName"><br>
+    姓名1（单向）：<input v-model="fullName1"><br>
+    姓名2（单向）：<input v-model="fullName2"><br>
+    姓名3（双向）：<input v-model="fullName3"><br>
+
+</div>
+
+</body>
+<script type="text/javascript" src="../js/vue.js"></script>
+<script type="text/javascript">
+    const vm = new Vue({
+        el: '#demo',
+        data: {
+            fristName: 'A',
+            lastName: 'B',
+            fullName2: 'A B'
+        },
+
+        computed: {//计算属性配置
+            fullName1() {
+                return this.fristName + " " + this.lastName
+            },
+            fullName3: {
+                //当获取当前属性值时自动调用，将返回值作为属性值
+                get() {
+                    return this.fristName + " " + this.lastName
+                },
+
+                //当属性值发生了改变自动调用，监视当前属性值变化，同步更新相关的
+                //其他属性值
+                set(values) {
+                    const names = values.split(' ');
+                    this.fristName = names[0];
+                    this.lastName = names[1]
+
+                }
+            }
+        },
+
+        watch: {
+            //监视firstName
+            fristName: function (value) {
+                this.fullName2 = value + " " + this.lastName
+            }
+        }
+
+    });
+
+    //监视lastName
+    vm.$watch('lastName', function (value) {
+        this.fullName2 = this.fristName + " " + value
+    })
+
+</script>
+
+
+</html>

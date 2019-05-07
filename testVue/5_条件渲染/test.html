@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="demo">
+    <p v-if="ok1">表白成功</p>
+    <p v-else>表白失败</p>
+    ======================
+
+    <hr>
+    <p v-show="ok1">求婚成功</p>
+    <p v-show="!ok1">求婚失败</p>
+
+    <button @click="update">切换</button>
+</div>
+
+</body>
+<script src="../js/vue.js"></script>
+<script>
+    new Vue({
+        el: '#demo',
+        data: {
+            ok1: true
+        },
+        methods: {
+            update() {
+                this.ok1 = !this.ok1
+            }
+        }
+    })
+
+</script>
+
+</html>

@@ -34,9 +34,9 @@
         获取用户所有角色权限
         List<UmsPermission> getRolePermissionList(@Param("adminId") Long adminId);
     -->
-    <select id="getRolePermissionList" resultMap="com.supermarket.mall.mapper.UmsPermissionMapper.BaseResultMap">
+    <!--<select id="getRolePermissionList" resultMap="com.supermarket.mall.mapper.UmsPermissionMapper.BaseResultMap">-->
 
-    </select>
+    <!--</select>-->
 
     <!--
         得到用户的所有权限
