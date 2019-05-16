@@ -1,6 +1,7 @@
 package com.supermarket;
 
 import com.alibaba.fastjson.JSONObject;
+import io.swagger.models.auth.In;
 import org.junit.Test;
 
 import java.lang.reflect.Field;
@@ -13,6 +14,9 @@ import java.util.stream.Collectors;
  */
 public class TestStream {
 
+    public static void main(String[] args) {
+        System.out.println(Runtime.getRuntime().availableProcessors());
+    }
     @Test
     public void testMap() throws NoSuchFieldException, IllegalAccessException {
         List<String> str = Arrays.asList("a", "b", "c", "d");
